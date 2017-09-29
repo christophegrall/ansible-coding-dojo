@@ -1,0 +1,44 @@
+---
+- name: Premier déploiement
+  hosts: slave1
+  become: true
+  vars:
+    - install_dir: "/custom/app/myapp/"
+
+  tasks:
+    - name: task1
+      debug: msg=toto
+
+    - name: create destination dir
+      file:
+        path: "/custom/app/myapp/"
+        state: directory
+
+    - name: copie jar executable
+      copy:
+        src: files/demo.jar
+        dest: /custom/app/myapp/myapp.jar
+        mode: 0770
+
+    - name: add repo for java 8
+      apt_repository:
+        repo: 'ppa:openjdk-r/ppa'
+        state: present
+
+    - name: install java 8
+      apt:
+        name: openjdk-8-jdk
+        state: present
+        update-cache: no
+        force: no
+
+    - name: install service
+      file:
+        src: /custom/app/myapp/myapp.jar
+        dest: /etc/init.d/myapp
+        state: link
+
+    - name: start service
+      service:
+        name: myapp
+        state: started
