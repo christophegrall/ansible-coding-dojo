@@ -9,21 +9,21 @@
     - name: task1
       debug: msg=toto
 
-    - name: create destination dir
+    - name: Create destination dir
       file:
         path: "/custom/app/myapp/"
         state: directory
 
-    - name: copie jar executable
+    - name: Copy executable jar
       copy:
-        src: files/demo.jar
+        src: ../demo/target/demo.jar
         dest: /custom/app/myapp/myapp.jar
         mode: 0770
 
-    - name: add repo for java 8
-      apt_repository:
-        repo: 'ppa:openjdk-r/ppa'
-        state: present
+    # - name: add repo for java 8
+    #   apt_repository:
+    #     repo: 'ppa:openjdk-r/ppa'
+    #     state: present
 
     - name: install java 8
       apt:

@@ -1,6 +1,11 @@
 target/
 !.mvn/wrapper/maven-wrapper.jar
+
+### Ansible ###
 *.retry
+
+### Vagrant ###
+.vagrant/
 
 ### STS ###
 .apt_generated
