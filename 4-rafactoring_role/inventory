@@ -3,9 +3,8 @@ masters
 slaves
 
 [masters]
-master ansible_host=10.10.0.10 ansible_user=vagrant
+master ansible_host=192.168.61.10 ansible_user=vagrant
 
 [slaves]
-slave1 ansible_host=10.10.0.11 ansible_user=vagrant
-slave2 ansible_host=10.10.0.12 ansible_user=vagrant
-
+slave1 ansible_host=192.168.61.11 ansible_user=vagrant
+slave2 ansible_host=192.168.61.12 ansible_user=vagrant
