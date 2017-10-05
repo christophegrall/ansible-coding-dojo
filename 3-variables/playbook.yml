@@ -2,18 +2,6 @@
 - name: Premier déploiement (variabilisé)
   hosts: slave1
   become: true
-  # vars:
-  #   - app: "myapp"
-  #   - base_dir: /custom
-  #   - base_app_dir: "{{base_dir}}/app"
-  #   - base_log_dir: "{{base_dir}}/log"
-  #   - app_dir: "{{base_app_dir}}/{{app}}"
-  #   - conf_dir: "{{base_app_dir}}/{{app}}-conf"
-  #   - log_dir: "{{base_log_dir}}/{{app}}"
-  #   - deploy_user: "{{app}}"
-  #   - deploy_group: "{{app}}"
-  #   - app_jar: "{{app_dir}}/{{app}}.jar"
-  #   - java_opts: "-Xms256m -Xmx512m -Dspring.config.location={{conf_dir}}/application.properties"
 
   tasks:
 
@@ -83,16 +71,21 @@
         force: no
 
     - name: Install myapp.service systemd unit file
-      copy:
+      template:
         src: "templates/systemd.service.j2"
         dest: "/etc/systemd/system/{{app}}.service"
+
+    - name: Install external application.properties
+      template:
+        src: "templates/application.properties.j2"
+        dest: "{{conf_dir}}/application.properties"
 
     - name: (re)Start myapp.service
       systemd:
         state: "restarted"
         name: "myapp.service"
         daemon_reload: "yes"
-      when: jar_copy.changed
+      when: True or jar_copy.changed
 
     # After the playbook has been ran
     # curl http://10.10.0.11:8080/ should return a message "Welcome from default-server"
