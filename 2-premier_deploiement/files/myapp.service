@@ -1,0 +1,10 @@
+After=syslog.target
+After=network.target
+
+[Service]
+User=myapp
+ExecStart=/usr/bin/java -Xms256m -Xmx512m -jar /custom/app/myapp/myapp.jar
+SuccessExitStatus=143
+
+[Install]
+WantedBy=multi-user.target

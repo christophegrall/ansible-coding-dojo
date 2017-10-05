@@ -2,28 +2,66 @@
 - name: Premier déploiement
   hosts: slave1
   become: true
-  vars:
-    - install_dir: "/custom/app/myapp/"
 
   tasks:
-    - name: task1
-      debug: msg=toto
 
-    - name: Create destination dir
+    - name: Create a Linux user for the application
+      user:
+        name: "myapp"
+        group: "myapp"
+        shell: "/usr/sbin/nologin"
+        state: "present"
+
+    - name: Create a base directory
+      file:
+        name: "/custom"
+        state: "directory"
+        mode: "u+rwx,g+rx,o+rx"
+
+    - name: Create a base directory for applications
+      file:
+        name: "/custom/app"
+        state: "directory"
+        mode: "u+rwx,g+rx,o+rx"
+
+    - name: Create a base directory for logs
+      file:
+        name: "/custom/log"
+        state: "directory"
+        mode: "u+rwx,g+rx,o+rx"
+    
+    - name: Create application dir
       file:
         path: "/custom/app/myapp/"
         state: directory
+        owner: "myapp"
+        group: "myapp"
+        mode: 0700
+
+    - name: Create log dir
+      file:
+        path: "/custom/log/myapp/"
+        state: directory
+        owner: "myapp"
+        group: "myapp"
+        mode: 0700
+
+    - name: Create application configuration dir
+      file:
+        path: "/custom/app/myapp-conf/"
+        state: directory
+        owner: "myapp"
+        group: "myapp"
+        mode: 0700
 
     - name: Copy executable jar
       copy:
         src: ../demo/target/demo.jar
         dest: /custom/app/myapp/myapp.jar
+        owner: "myapp"
+        group: "myapp"
         mode: 0770
-
-    # - name: add repo for java 8
-    #   apt_repository:
-    #     repo: 'ppa:openjdk-r/ppa'
-    #     state: present
+      register: jar_copy
 
     - name: install java 8
       apt:
@@ -32,13 +70,22 @@
         update-cache: no
         force: no
 
-    - name: install service
-      file:
-        src: /custom/app/myapp/myapp.jar
-        dest: /etc/init.d/myapp
-        state: link
+    - name: Install myapp.service systemd unit file
+      copy:
+        src: "files/myapp.service"
+        dest: "/etc/systemd/system/myapp.service"
 
-    - name: start service
-      service:
-        name: myapp
-        state: started
+    - name: (re)Start myapp.service
+      systemd:
+        state: "restarted"
+        name: "myapp.service"
+        daemon_reload: "yes"
+      when: jar_copy.changed
+
+    # After the playbook has been ran
+    # curl http://10.10.0.11:8080/ should return a message "Welcome from default-server"
+
+    - name: Wait for the HTTP port to be listening
+      wait_for:
+        port: 8080
+        timeout: 10

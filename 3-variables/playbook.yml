@@ -1,41 +1,79 @@
 ---
-- name: Premier déploiement
+- name: Premier déploiement (variabilisé)
   hosts: slave1
   become: true
-  vars:
-    - install_dir: "/custom/app/myapp/"
+  # vars:
+  #   - app: "myapp"
+  #   - base_dir: /custom
+  #   - base_app_dir: "{{base_dir}}/app"
+  #   - base_log_dir: "{{base_dir}}/log"
+  #   - app_dir: "{{base_app_dir}}/{{app}}"
+  #   - conf_dir: "{{base_app_dir}}/{{app}}-conf"
+  #   - log_dir: "{{base_log_dir}}/{{app}}"
+  #   - deploy_user: "{{app}}"
+  #   - deploy_group: "{{app}}"
+  #   - app_jar: "{{app_dir}}/{{app}}.jar"
+  #   - java_opts: "-Xms256m -Xmx512m -Dspring.config.location={{conf_dir}}/application.properties"
 
   tasks:
-    - name: task1
-      debug: msg=toto
 
-    - name: create destination dir
+    - name: Create a Linux user for the application
+      user:
+        name: "{{deploy_user}}"
+        group: "{{deploy_group}}"
+        shell: "/usr/sbin/nologin"
+        state: "present"
+
+    - name: Create a base directory for applications
+      file:
+        name: "{{base_dir}}"
+        state: "directory"
+        mode: "u+rwx,g+rx,o+rx"
+
+    - name: Create a base directory for applications
+      file:
+        name: "{{base_app_dir}}"
+        state: "directory"
+        mode: "u+rwx,g+rx,o+rx"
+
+    - name: Create a base directory for logs
+      file:
+        name: "{{base_log_dir}}"
+        state: "directory"
+        mode: "u+rwx,g+rx,o+rx"
+    
+    - name: Create application dir
       file:
         path: "/custom/app/myapp/"
         state: directory
+        owner: "{{deploy_user}}"
+        group: "{{deploy_group}}"
+        mode: 0700
 
-    - name: create configuration dir
+    - name: Create log dir
+      file:
+        path: "/custom/log/myapp/"
+        state: directory
+        owner: "{{deploy_user}}"
+        group: "{{deploy_group}}"
+        mode: 0700
+
+    - name: Create application configuration dir
       file:
         path: "/custom/app/myapp-conf/"
         state: directory
-        mode: 0770
+        owner: "{{deploy_user}}"
+        group: "{{deploy_group}}"
+        mode: 0700
 
-    - name: copie jar executable
+    - name: Copy executable jar
       copy:
-        src: files/demo.jar
-        dest: /custom/app/myapp/myapp.jar
+        src: ../demo/target/demo.jar
+        dest: "{{app_jar}}"
+        owner: "{{deploy_user}}"
+        group: "{{deploy_group}}"
         mode: 0770
-
-    - name: deploy configuration
-      template:
-        src: templates/application.properties
-        dest: /custom/app/myapp-conf/
-        mode: 0644
-
-    - name: add repo for java 8
-      apt_repository:
-        repo: 'ppa:openjdk-r/ppa'
-        state: present
+      register: jar_copy
 
     - name: install java 8
       apt:
@@ -44,13 +82,22 @@
         update-cache: no
         force: no
 
-    - name: install service
-      file:
-        src: /custom/app/myapp/myapp.jar
-        dest: /etc/init.d/myapp
-        state: link
+    - name: Install myapp.service systemd unit file
+      copy:
+        src: "templates/systemd.service.j2"
+        dest: "/etc/systemd/system/{{app}}.service"
 
-    - name: start service
-      service:
-        name: myapp
-        state: started
+    - name: (re)Start myapp.service
+      systemd:
+        state: "restarted"
+        name: "myapp.service"
+        daemon_reload: "yes"
+      when: jar_copy.changed
+
+    # After the playbook has been ran
+    # curl http://10.10.0.11:8080/ should return a message "Welcome from default-server"
+
+    - name: Wait for the HTTP port to be listening
+      wait_for:
+        port: 8080
+        timeout: 10
