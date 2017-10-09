@@ -1,0 +1,13 @@
+---
+postgresql_version: 9.6
+postgresql_databases:
+ - name: foobar
+   owner: baz
+
+postgresql_users:
+ - name: baz
+   pass: pass
+
+postgresql_user_privileges:
+ - name: baz
+   db: foobar
