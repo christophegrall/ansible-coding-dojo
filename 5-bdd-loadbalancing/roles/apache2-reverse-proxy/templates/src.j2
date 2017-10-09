@@ -1,0 +1,24 @@
+<VirtualHost *:80>
+    ServerName {{apache_server_name}}
+
+    Redirect permanent / https://mycodingdojo/
+</VirtualHost>
+
+<VirtualHost *:80>
+    ServerName {{apache_server_name}}
+    LogFormat "%a %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\" %{ms}T %h" combined-time
+    CustomLog /custom/log/{{app_instance_name}}/httpd/{{app_instance_name}}-access.log combined-time
+    ErrorLog /custom/log/{{app_instance_name}}/httpd/{{app_instance_name}}-error.log
+
+    <IfModule mod_proxy.c>
+        ProxyRequests     Off
+
+        <Proxy http://localhost:{{app_http_port}}/*>
+            Order deny,allow
+            Allow from all
+        </Proxy>
+
+        ProxyPass         /  http://localhost:{{app_http_port}}/
+        ProxyPassReverse  /  http://localhost:{{app_http_port}}/
+    </IfModule>
+</VirtualHost>

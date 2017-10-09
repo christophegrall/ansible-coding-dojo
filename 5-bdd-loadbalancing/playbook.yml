@@ -5,7 +5,8 @@
   vars_files:
       - vars/main.yml
   roles:
-   - ANXS.postgresql
+  # - ANXS.postgresql
+   - apache2-reverse-proxy
 
 - hosts: slaves
   become: true
