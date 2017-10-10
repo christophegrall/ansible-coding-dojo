@@ -5,6 +5,11 @@
 
   tasks:
 
+    - name: Create a Linux group for the application
+      group:
+        name: "{{deploy_group}}"
+        state: "present"
+
     - name: Create a Linux user for the application
       user:
         name: "{{deploy_user}}"
