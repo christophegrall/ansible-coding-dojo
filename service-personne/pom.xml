@@ -17,23 +17,7 @@
 
     <name>Service Personne</name>
 
-    <scm>
-        <connection>scm:git:git@gitlab.mpw.fra:services-communs/service-personne.git</connection>
-        <url>http://demandes.mpw.fra/projects/service-personne/repository</url>
-    </scm>
-
-    <distributionManagement>
-        <repository>
-            <id>artifactory</id>
-            <name>depot.mpw.fra-releases</name>
-            <url>${usine.url.distribution-management.releases}</url>
-        </repository>
-        <snapshotRepository>
-            <id>artifactory</id>
-            <name>depot.mpw.fra-snapshots</name>
-            <url>${usine.url.distribution-management.snapshots}</url>
-        </snapshotRepository>
-    </distributionManagement>
+  
 
     <properties>
 
@@ -45,7 +29,7 @@
         <openpojo.version>0.8.4</openpojo.version>
         <equalsverifier.version>1.7.3</equalsverifier.version>
 
-        <springfox.version>2.3.1</springfox.version>
+        <springfox.version>2.6.1</springfox.version>
 
         <metrics.version>3.1.0</metrics.version>
 
@@ -64,12 +48,6 @@
         <snippetsDirectory>${project.build.directory}/generated-snippets</snippetsDirectory>
         <spring-restdocs-output-directory>/var/www/html/docs/${project.artifactId}/${project.version}</spring-restdocs-output-directory>
         <spring-restdocs.version>1.1.2.RELEASE</spring-restdocs.version>
-
-        <!--Usine Manpower-->
-        <usine.url.issue-management>http://demandes.mpw.fra</usine.url.issue-management>
-        <usine.url.ci-management>http://ci.mpw.fra</usine.url.ci-management>
-        <usine.url.distribution-management.releases>http://depot.mpw.fra/libs-releases-local</usine.url.distribution-management.releases>
-        <usine.url.distribution-management.snapshots>http://depot.mpw.fra/libs-snapshots-local</usine.url.distribution-management.snapshots>
         
     </properties>
 

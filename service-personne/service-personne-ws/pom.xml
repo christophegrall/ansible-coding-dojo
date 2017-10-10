@@ -67,9 +67,10 @@
         </dependency>
 
         <dependency>
-            <groupId>com.manpower.commons</groupId>
-            <artifactId>springfox-swagger-ui-manpower</artifactId>
-        </dependency>
+   		 	<groupId>io.springfox</groupId>
+   		 	<artifactId>springfox-swagger-ui</artifactId>
+    		<version>2.4.0</version>
+		</dependency>
 
         <!-- MAPSTRUCT -->
 
@@ -240,15 +241,6 @@
         </plugins>
     </build>
 
-    <!-- Profile -->
 
-    <profiles>
-        <profile>
-            <id>dev</id>
-            <properties>
-                <spring-restdocs-output-directory>${project.build.directory}/generated-docs</spring-restdocs-output-directory>
-            </properties>
-        </profile>
-    </profiles>
 
 </project>
