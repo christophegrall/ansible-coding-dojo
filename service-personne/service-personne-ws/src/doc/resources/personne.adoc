@@ -1,0 +1,100 @@
+[[personne]]
+== Personne
+
+Cette ressource est utilisée pour gérer les *Personnes*.
+
+Objectifs:: *DECRIRE ICI FONCTIONNELLEMENT L'UTILISATION DE LA RESSOURCE Personne*
+
+[[create-personne]]
+=== Créer
+
+Une requête `POST` est utilisée pour créer un Personne.
+
+Dans le header on retrouve la `location` pour récupérer le Personne qui vient d'être créer.
+
+==== Structure de la requête
+
+[cols="8m,4m,8,^1m,8"]
+include::{snippets}/create_personne/request-fields.adoc[]
+
+==== Exemple de requête
+
+include::{snippets}/create_personne/curl-request.adoc[]
+
+==== Exemple de réponse
+
+include::{snippets}/create_personne/http-response.adoc[]
+
+[[list-personne]]
+=== Lister
+
+Une requête `GET` est utilisée pour récupérer tous les Personnes.
+
+==== Exemple de requête
+
+include::{snippets}/get_all_personnes/curl-request.adoc[]
+
+==== Structure de la réponse
+
+include::{snippets}/get_all_personnes/response-fields.adoc[]
+
+==== Exemple de réponse
+
+include::{snippets}/get_all_personnes/http-response.adoc[]
+
+
+[[get-by-id-personne]]
+=== Chercher par Id
+
+Une requête `GET` est utilisée pour récupérer un Personne à partir de son Id.
+
+==== Structure de la requête
+
+include::{snippets}/get_personne/path-parameters.adoc[]
+
+==== Exemple de requête
+
+include::{snippets}/get_personne/curl-request.adoc[]
+
+==== Structure de la réponse
+
+include::{snippets}/get_personne/response-fields.adoc[]
+
+==== Exemple de réponse
+
+include::{snippets}/get_personne/http-response.adoc[]
+
+[[update-personne]]
+=== Modifier
+
+Une requête `PUT` est utilisée pour modifier un Personne.
+
+==== Structure de la requête
+
+[cols="8m,4m,8,^1m,8"]
+include::{snippets}/update_personne/request-fields.adoc[]
+
+==== Exemple de requête
+
+include::{snippets}/update_personne/curl-request.adoc[]
+
+==== Exemple de réponse
+
+include::{snippets}/update_personne/http-response.adoc[]
+
+[[delete-personne]]
+=== Supprimer
+
+Une requête `DELETE` est utilisée pour supprimer un Personne à partir de son Id.
+
+==== Structure de la requête
+
+include::{snippets}/delete_personne/path-parameters.adoc[]
+
+==== Exemple de requête
+
+include::{snippets}/delete_personne/curl-request.adoc[]
+
+==== Exemple de réponse
+
+include::{snippets}/delete_personne/http-response.adoc[]

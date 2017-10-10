@@ -1,0 +1,31 @@
+{
+    "fields": [
+        {
+            "fieldId": 1,
+            "fieldName": "nom",
+            "fieldType": "String",
+            "fieldDescription": "nom",
+            "fieldIgnore": false
+        },
+        {
+            "fieldId": 2,
+            "fieldName": "prenom",
+            "fieldType": "String",
+            "fieldDescription": "prenom",
+            "fieldIgnore": false
+        }
+    ],
+    "expose": true,
+    "entityPath": "personnes",
+    "restMethods": [
+        "getAll",
+        "getOne",
+        "create",
+        "update",
+        "delete"
+    ],
+    "relationships": [],
+    "changelogDate": "20171010162458",
+    "dto": false,
+    "idStrategy": "sequence"
+}

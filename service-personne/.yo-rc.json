@@ -1,0 +1,9 @@
+{
+  "generator-jrest": {
+    "baseName": "personne",
+    "packageName": "com.dojo.services.personne",
+    "devDatabaseType": "h2Memory",
+    "prodDatabaseType": "postgresql",
+    "uuid": false
+  }
+}

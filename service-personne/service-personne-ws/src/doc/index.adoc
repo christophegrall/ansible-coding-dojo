@@ -1,0 +1,154 @@
+= Service Personne
+service-personne;
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+TIP: *DECRIRE ICI FONCTIONNELLEMENT LE SERVICE*
+
+[[overview]]
+= Overview
+
+[[overview-http-verbs]]
+== HTTP verbs
+
+Service Personne adhére aux conventions standards Manpower HTTP et REST dans son usage des verbes HTTP.
+
+|===
+| Verb | Usage
+
+| `GET`
+| Utilisé pour trouver une ou plusieurs ressource
+
+| `POST`
+| Utilisé pour créer une ressource
+
+| `PUT`
+| Utilisé pour modifier une ressource
+
+| `DELETE`
+| Utilisé pour supprimer une ressource
+|===
+
+[[overview-http-status-codes]]
+== HTTP status codes
+
+Service Personne adhére aux conventions standards Manpower HTTP et REST dans son usage des status code HTTP.
+
+[cols="1,2,4"]
+|===
+| | Status Code | Description
+
+.4+| Success
+| `200 OK`
+| Code de succès basique.+ Spécialement utilisé pour les succés des requêtes GET, PUT et DELETE.
+
+| `201 Created`
+| Indique que la ressource a été créée avec succès. Typiquement utilisé avec les requêtes POST.
+
+| `202 Acepted`
+| La requête a été acceptée pour un traitement asynchrone.
+
+| `206 Partial Content`
+| La ressource retournée est incomplète. Typiquement utilisé pour la pagination.
+
+.5+| Error
+| `400 Bad Request`
+| Erreur générale pour une requête ne pouvant être traitée. Notamment utilisé lorsque les paramètres en entrée ou les règles de validation de la ressource ne sont pas respectées.
+
+| `401 Unauthorized`
+| Je ne vous connais pas. Dites moi qui vous êtes et je regarderai vos permissions.
+
+| `403 Forbidden`
+| Vos droits sont insuffisants.
+
+| `404 Not Found`
+| La ressource que vous avez demandée n'existe pas.
+
+| `405 Method not allowed`
+| La méthode n'est pas permise. Exemple faire un POST sur /sorciers/12
+
+| Technical Error
+| `500 Internal Server Error`
+| La requête semble bonne, mais un problème a été rencontré sur le serveur.
+
+|===
+
+[[overview-errors]]
+== Errors
+
+A chaque fois qu'une réponse en erreur (status code >=400) est retournée, le body contiendra un object JSON qui décriera le problème.
+
+L'objet contiendra au minimum:
+
+|===
+| Path | Type | Description
+
+| timestamp | Number | The time, in format zoned date time, at which the error occurred
+| status | Number | The HTTP status code, e.g. 400
+| error | String | The HTTP error that occurred, e.g. Bad Request
+| message | String | A description of the cause of the error
+| exception | String | The exception class name that causes the error
+| path | String | The path called, e.g /sorciers
+
+|===
+
+Dans le cas d'une erreur de validation il pourra être ajouté 2 éléments :
+
+* Une liste de `fieldErrors` qui contiendra les erreurs liés à la propriété qui a présenté un problème de validation
+* Une liste de `globalErrors` qui contiendra les erreurs liés à l'objet n'étant pas rattachés spécifiquement à un champ (ex : la ressource est vérouillée)
+
+
+Par exemple, une requête cherchant un sorcier à partir d'un id inexistant produira
+`404 Not Found` response:
+
+[source,json]
+----
+HTTP/1.1 404 Not Found
+Content-Type: application/json;charset=UTF-8
+
+{
+  "timestamp" : "2016-06-15T12:34:38+0000",
+  "status" : 404,
+  "error" : "Not Found",
+  "exception" : "com.manpower.services.jkrowling.exceptions.ResourceNotFoundException",
+  "message" : "No message available",
+  "path" : "/sorciers/12"
+}
+----
+
+
+Par exemple, une requête qui essaie de créer un sorcier avec un code trop long
+`400 Bad Request` response:
+
+[source,json]
+----
+{
+    "code": "error.resource.invalid",
+    "error": "Bad Request",
+    "exception": "com.manpower.services.jkrowling.error.exception.InvalidRequestException",
+    "fieldErrors": [
+        {
+            "code": "Size",
+            "field": "code",
+            "message": "size must be between 0 and 5",
+            "objectName": "sorcier",
+            "rejectedValue": "trop-long"
+        }
+    ],
+    "globalErrors": [],
+    "message": "Invalid Sorcier",
+    "path": "/sorciers",
+    "status": 400,
+    "timestamp": "2016-08-12T15:26:29.226+02:00"
+}
+----
+
+[[resources]]
+= Resources
+
+include::resources/personne.adoc[]
+// JRest will add restdocs for resources here
