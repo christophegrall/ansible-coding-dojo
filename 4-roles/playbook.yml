@@ -4,6 +4,7 @@
 
   roles:
 
-   - java
-   - app-conf
-   - standalone-webapp
+   - role: java
+   - role: app-conf
+     app: demo
+   - role: standalone-webapp
