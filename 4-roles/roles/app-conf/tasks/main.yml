@@ -1,17 +1,55 @@
 ---
 # tasks file for app-conf
-- name: create destination dir
+- name: Create a Linux group for the application
+  group:
+    name: "{{deploy_group}}"
+    state: "present"
+
+- name: Create a Linux user for the application
+  user:
+    name: "{{deploy_user}}"
+    group: "{{deploy_group}}"
+    shell: "/usr/sbin/nologin"
+    state: "present"
+
+- name: Create a base directory for applications
+  file:
+    name: "{{base_dir}}"
+    state: "directory"
+    mode: "u+rwx,g+rx,o+rx"
+
+- name: Create a base directory for applications
+  file:
+    name: "{{base_app_dir}}"
+    state: "directory"
+    mode: "u+rwx,g+rx,o+rx"
+
+- name: Create a base directory for logs
+  file:
+    name: "{{base_log_dir}}"
+    state: "directory"
+    mode: "u+rwx,g+rx,o+rx"
+
+- name: Create application dir
   file:
     path: "/custom/app/myapp/"
     state: directory
+    owner: "{{deploy_user}}"
+    group: "{{deploy_group}}"
+    mode: 0700
 
-- name: create configuration dir
+- name: Create log dir
+  file:
+    path: "/custom/log/myapp/"
+    state: directory
+    owner: "{{deploy_user}}"
+    group: "{{deploy_group}}"
+    mode: 0700
+
+- name: Create application configuration dir
   file:
     path: "/custom/app/myapp-conf/"
     state: directory
-    mode: 0770
-
-- name: deploy configuration
-  template:
-    src: templates/application.properties
-    dest: /custom/
+    owner: "{{deploy_user}}"
+    group: "{{deploy_group}}"
+    mode: 0700
