@@ -1,17 +1,26 @@
----
-- hosts: masters
-  remote_user: root
+- name: "Déploiement DataBase+Load Balancer"
+  hosts: masters
+  #remote_user: root
   become: true
-  vars_files:
-      - vars/main.yml
+  # vars_files:
+      # - vars/main.yml
   roles:
-  # - ANXS.postgresql
+  #  - ANXS.postgresql
+   - geerlingguy.postgresql
    - apache2-reverse-proxy
 
-- hosts: slaves
-  become: true
+# - name: Déploiement avec Rôles
+#   hosts: slave1
+#   become: true
 
-  roles:
-   - java
-   - app-conf
-   - standalone-webapp
+#   roles:
+#    - role: prepare
+#    - role: app-conf
+#      conf_files:
+#        - "templates/{{app}}/application.properties.j2"
+#      # - "templates/{{app}}/application_additional.properties.j2"
+#    - {role: standalone-webapp-java, jdk_version: 8}
+
+#   # alternative syntax
+#   #  - role: standalone-webapp-java
+#   #    jdk_version: 8

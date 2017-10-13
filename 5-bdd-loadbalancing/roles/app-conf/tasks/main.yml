@@ -1,17 +1,6 @@
 ---
-# tasks file for app-conf
-- name: create destination dir
-  file:
-    path: "/custom/app/myapp/"
-    state: directory
-
-- name: create configuration dir
-  file:
-    path: "/custom/app/myapp-conf/"
-    state: directory
-    mode: 0770
-
-- name: deploy configuration
+- name: Install external application.properties
   template:
-    src: templates/application.properties
-    dest: /custom/
+    src: "{{item}}"
+    dest: "{{conf_dir}}/application.properties"
+  with_items: "{{conf_files | list}}"

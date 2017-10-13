@@ -1,0 +1,12 @@
+---
+app: "myapp"
+base_dir: /custom
+base_app_dir: "{{base_dir}}/app"
+base_log_dir: "{{base_dir}}/log"
+app_dir: "{{base_app_dir}}/{{app}}"
+conf_dir: "{{base_app_dir}}/{{app}}-conf"
+log_dir: "{{base_log_dir}}/{{app}}"
+deploy_user: "{{app}}"
+deploy_group: "{{app}}"
+app_jar: "{{app_dir}}/{{app}}.jar"
+java_opts: "-Xms256m -Xmx512m -Dspring.config.location={{conf_dir}}/application.properties"

@@ -1,0 +1,28 @@
+---
+postgresql_hba_entries:
+  - { type: local, database: all, user: postgres, auth_method: peer }
+  # - { type: local, database: all, user: all, auth_method: peer }
+  # - { type: host, database: all, user: all, auth_method: trust }
+  - { type: host, database: all, user: all, address: '0.0.0.0/0', auth_method: trust }
+
+postgresql_databases:
+  - name: example_db
+postgresql_users:
+  - name: example_user
+    password: supersecure
+
+# login_host: "*"
+
+# postgresql_version: 9.6
+# postgresql_databases:
+#  - name: foobar
+#    owner: baz
+
+# postgresql_users:
+#  - name: baz
+#    pass: pass
+
+# postgresql_user_privileges:
+#  - name: baz
+#    db: foobar
+#    priv: "ALL"
