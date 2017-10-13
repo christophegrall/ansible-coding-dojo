@@ -1,10 +1,16 @@
 ---
-- hosts: slave1
+- name: Déploiement avec Rôles
+  hosts: slave1
   become: true
 
   roles:
-
-   - role: java
+   - role: prepare
    - role: app-conf
-     app: demo
-   - role: standalone-webapp
+     conf_files:
+       - "templates/{{app}}/application.properties.j2"
+     # - "templates/{{app}}/application_additional.properties.j2"
+   - {role: standalone-webapp-java, jdk_version: 8}
+
+  # alternative syntax
+  #  - role: standalone-webapp-java
+  #    jdk_version: 8

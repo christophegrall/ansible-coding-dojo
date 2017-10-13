@@ -90,7 +90,7 @@
         state: "restarted"
         name: "myapp.service"
         daemon_reload: "yes"
-      when: True or jar_copy.changed
+      when: jar_copy.changed
 
     # After the playbook has been ran
     # curl http://10.10.0.11:8080/ should return a message "Welcome from default-server"
@@ -98,4 +98,4 @@
     - name: Wait for the HTTP port to be listening
       wait_for:
         port: 8080
-        timeout: 10
+        timeout: "{{ startup_timeout | default('20') | int }}"

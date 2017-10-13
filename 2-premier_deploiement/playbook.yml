@@ -93,4 +93,4 @@
     - name: Wait for the HTTP port to be listening
       wait_for:
         port: 8080
-        timeout: 10
+        timeout: 20

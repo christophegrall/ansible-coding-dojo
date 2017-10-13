@@ -1,13 +1,13 @@
 ---
 # tasks file for java
-- name: add repo for java 8
-  apt_repository:
-    repo: 'ppa:openjdk-r/ppa'
-    state: present
+# - name: add repo for java 8
+#   apt_repository:
+#     repo: 'ppa:openjdk-r/ppa'
+#     state: present
 
-- name: install java 8
+- name: install java {{jdk_version}}
   apt:
-    name: openjdk-8-jdk
+    name: openjdk-{{jdk_version}}-jdk
     state: present
     update-cache: no
     force: no
