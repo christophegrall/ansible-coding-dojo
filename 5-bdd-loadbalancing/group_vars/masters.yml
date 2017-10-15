@@ -5,11 +5,16 @@ postgresql_hba_entries:
   # - { type: host, database: all, user: all, auth_method: trust }
   - { type: host, database: all, user: all, address: '0.0.0.0/0', auth_method: trust }
 
+postgresql_global_config_options:
+  - option: listen_addresses
+    value: '*'
+
+
 postgresql_databases:
-  - name: example_db
+  - name: dojo_db
 postgresql_users:
-  - name: example_user
-    password: supersecure
+  - name: postgresql
+    password: postgresql
 
 # login_host: "*"
 
