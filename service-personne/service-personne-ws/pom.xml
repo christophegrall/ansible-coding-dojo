@@ -167,33 +167,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-            <!-- plugin speing restdocs -->
-            <plugin>
-				<groupId>org.asciidoctor</groupId>
-				<artifactId>asciidoctor-maven-plugin</artifactId>
-				<version>${asciidoctor-maven-plugin.version}</version>
-				<executions>
-					<execution>
-						<id>generate-docs</id>
-						<phase>prepare-package</phase>
-						<goals>
-							<goal>process-asciidoc</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>
-								${spring-restdocs-output-directory}
-							</outputDirectory>
-							<backend>html</backend>
-							<doctype>book</doctype>
-							<attributes>
-								<snippets>${project.build.directory}/generated-snippets</snippets>
-								<revnumber>${project.version}</revnumber>
-							</attributes>
-							<sourceDirectory>${basedir}/src/doc</sourceDirectory>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
+           
             <plugin>
                 <groupId>org.bsc.maven</groupId>
                 <artifactId>maven-processor-plugin</artifactId>
