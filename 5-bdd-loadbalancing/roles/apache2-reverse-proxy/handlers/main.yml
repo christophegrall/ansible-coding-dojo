@@ -1,2 +1,4 @@
 ---
-# handlers file for apache2-reverse-proxy
+
+- name: reload apache
+  service: name=apache2 state=reloaded

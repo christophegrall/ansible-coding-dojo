@@ -1,2 +1,26 @@
 ---
 # defaults file for apache2-reverse-proxy
+
+#balancer_server_name:
+#balancer_server_aliases: []
+
+balancer_app_server_group: serrvice-personne
+
+balancer_apache_modules:
+- proxy
+- proxy_ajp
+- proxy_http
+- proxy_balancer
+- lbmethod_bybusyness
+- lbmethod_byrequests
+- lbmethod_bytraffic
+- lbmethod_heartbeat
+
+balancer_method: byrequests
+#balancer_method: bytraffic
+#balancer_method: bybusyness
+#balancer_method: heartbeat
+
+balancer_config_file_name: balancer
+
+balancer_apache_default_vhost: 000-default

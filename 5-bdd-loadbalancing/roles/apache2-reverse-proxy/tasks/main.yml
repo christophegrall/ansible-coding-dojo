@@ -1,11 +1,32 @@
 ---
 # tasks file for apache2-reverse-proxy
-- name: Install Apache
-  block:
-    - apt: name={{ item }} state=installed update_cache=yes
-      with_items:
-       - apache2
-    - template: src=templates/src.j2 dest=/etc/foo.conf
-  #  - service: name=bar state=started enabled=True
+
+- name: Make sure Apache is installed
   become: true
-  become_user: root
+  apt: pkg={{item}} update_cache=yes state=installed
+  with_items:
+    - apache2
+
+- name: Make sure needed modules are present
+  become: true
+  apache2_module: name={{ item }} state=present
+  with_items: "{{ balancer_apache_modules }}"
+  notify:
+    - reload apache
+
+- name: Make sure balancer virtual host configuration file is up to date
+  become: true
+  template:
+    src=templates/src.j2
+    dest=/etc/apache2/sites-available/{{ balancer_config_file_name }}.conf
+    mode=0644
+
+- name: Make sure balancer virtual host configuration is enabled
+  become: true
+  command:
+    a2ensite {{ item }}.conf
+    creates=/etc/apache2/sites-enabled/{{ item }}.conf
+  with_items:
+   - "{{ balancer_config_file_name }}"
+  notify:
+   - reload apache

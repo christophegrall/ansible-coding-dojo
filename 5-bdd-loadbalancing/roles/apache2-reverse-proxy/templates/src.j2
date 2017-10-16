@@ -1,15 +1,25 @@
 <VirtualHost *:80>
+        ProxyRequests off
 
-    <IfModule mod_proxy.c>
-        ProxyRequests     Off
+        ServerName coding.com
 
-        <Proxy http://localhost:{{app_http_port | default('8080')}}/*>
-            Order deny,allow
-            Allow from all
+        <Proxy balancer://mycluster>
+
+                BalancerMember http://192.168.61.11:8080
+                BalancerMember http://192.168.61.12:8080
+
+                Require all granted
+                ProxySet lbmethod=byrequests
+
         </Proxy>
 
-        ProxyPass         /  http://localhost:{{app_http_port | default('8080')}}/
-        ProxyPassReverse  /  http://localhost:{{app_http_port | default('8080')}}/
-    </IfModule>
-    
+
+        <Location /balancer-manager>
+                SetHandler balancer-manager
+                Require host example.org
+
+        </Location>
+
+        ProxyPass / balancer://mycluster/
+
 </VirtualHost>
