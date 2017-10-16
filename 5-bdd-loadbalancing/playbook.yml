@@ -7,6 +7,17 @@
    - geerlingguy.postgresql
    - apache2-reverse-proxy
 
+  post_tasks:
+
+  - postgresql_schema:
+      name: personne
+      database: coding_dojo
+      login_user: postgres
+      login_password: postgres
+      login_host: 192.168.61.10
+      owner: postgres
+      state: present
+
 - name: Déploiement application
   hosts: slave1
   become: true

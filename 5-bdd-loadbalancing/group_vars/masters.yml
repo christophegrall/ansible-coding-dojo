@@ -11,7 +11,7 @@ postgresql_global_config_options:
 
 
 postgresql_databases:
-  - name: dojo_db
+  - name: coding_dojo
 postgresql_users:
   - name: postgresql
     password: postgresql

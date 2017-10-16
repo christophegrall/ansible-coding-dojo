@@ -10,3 +10,5 @@ deploy_user: "{{app}}"
 deploy_group: "{{app}}"
 app_jar: "{{app_dir}}/{{app}}.jar"
 java_opts: "-Xms256m -Xmx512m -Dspring.config.location={{conf_dir}}/application.properties"
+
+startup_timeout: 150

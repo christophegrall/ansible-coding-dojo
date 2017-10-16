@@ -11,4 +11,5 @@
         ProxyPass         /  http://localhost:{{app_http_port | default('8080')}}/
         ProxyPassReverse  /  http://localhost:{{app_http_port | default('8080')}}/
     </IfModule>
+    
 </VirtualHost>
