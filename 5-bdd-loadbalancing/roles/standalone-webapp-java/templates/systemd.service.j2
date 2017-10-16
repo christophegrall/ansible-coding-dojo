@@ -3,7 +3,7 @@ After=network.target
 
 [Service]
 User=myapp
-ExecStart=/usr/bin/java {{java_opts}} -jar {{app_jar}} --endpoints.enabled={{actuator_enabled | default(False) | bool | ternary('true', 'false')}}
+ExecStart=/usr/bin/java {{java_opts}} -jar {{app_jar}} 
 SuccessExitStatus=143
 
 [Install]

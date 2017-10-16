@@ -1,7 +1,7 @@
 ---
 - name: Copy executable jar
   copy:
-    src: ../demo/target/demo.jar
+    src: ../files/service-personne-ws.jar
     dest: "{{app_jar}}"
     owner: "{{deploy_user}}"
     group: "{{deploy_group}}"

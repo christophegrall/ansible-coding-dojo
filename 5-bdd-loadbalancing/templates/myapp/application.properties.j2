@@ -1,1 +1,19 @@
-server_name={{inventory_hostname}} - {{ansible_distribution}} {{ansible_distribution_release}} {{ansible_distribution_version}} ({{ansible_lsb.description}})
+
+# --- DataSource
+spring.datasource.driverClassName=org.postgresql.Driver
+spring.datasource.url=jdbc:postgresql://192.168.61.10/dojo_db?currentSchema=personne
+spring.datasource.username=postgres
+spring.datasource.password=postgres
+
+
+liquibase.enabled=true
+liquibase.url=jdbc:postgresql://192.168.61.10/dojo_db?currentSchema=personne
+liquibase.user=postgres
+liquibase.password=postgres
+
+spring.jpa.show-sql=true
+spring.jpa.hibernate.ddl-auto=none
+
+
+spring.jackson.serialization.indent_output=true
+server.port = 8080
