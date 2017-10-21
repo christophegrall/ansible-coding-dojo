@@ -3,7 +3,7 @@
 
 - name: Make sure Apache is installed
   become: true
-  apt: pkg={{item}} update_cache=yes state=installed
+  apt: pkg={{item}} update_cache=yes state=latest
   with_items:
     - apache2
 
@@ -12,21 +12,21 @@
   apache2_module: name={{ item }} state=present
   with_items: "{{ balancer_apache_modules }}"
   notify:
-    - reload apache
+    - restart apache
 
 - name: Make sure balancer virtual host configuration file is up to date
   become: true
   template:
     src=templates/src.j2
-    dest=/etc/apache2/sites-available/{{ balancer_config_file_name }}.conf
+    dest=/etc/apache2/conf-available/{{ balancer_config_file_name }}.conf
     mode=0644
 
 - name: Make sure balancer virtual host configuration is enabled
   become: true
   command:
-    a2ensite {{ item }}.conf
-    creates=/etc/apache2/sites-enabled/{{ item }}.conf
+    a2enconf {{ item }}.conf
+    creates=/etc/apache2/conf-enabled/{{ item }}.conf
   with_items:
    - "{{ balancer_config_file_name }}"
   notify:
-   - reload apache
+   - restart apache

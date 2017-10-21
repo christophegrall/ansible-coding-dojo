@@ -1,4 +1,5 @@
 ---
 
-- name: reload apache
-  service: name=apache2 state=reloaded
+- name: restart apache
+  become: true
+  service: name=apache2 state=restarted

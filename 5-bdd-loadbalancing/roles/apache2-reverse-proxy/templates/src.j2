@@ -1,25 +1,8 @@
-<VirtualHost *:80>
-        ProxyRequests off
+ProxyPreserveHost On
 
-        ServerName coding.com
-
-        <Proxy balancer://mycluster>
-
-                BalancerMember http://192.168.61.11:8080
-                BalancerMember http://192.168.61.12:8080
-
-                Require all granted
-                ProxySet lbmethod=byrequests
-
-        </Proxy>
-
-
-        <Location /balancer-manager>
-                SetHandler balancer-manager
-                Require host example.org
-
-        </Location>
-
-        ProxyPass / balancer://mycluster/
-
-</VirtualHost>
+<Proxy balancer://mycluster>
+  BalancerMember http://192.168.61.11:8080/ 
+  BalancerMember http://192.168.61.12:8080/
+  ProxySet lbmethod=bybusyness
+</Proxy>
+ProxyPass / balancer://mycluster
