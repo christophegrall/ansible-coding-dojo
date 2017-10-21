@@ -1,8 +1,11 @@
 ProxyPreserveHost On
+ProxyRequests On
 
 <Proxy balancer://mycluster>
-  BalancerMember http://192.168.61.11:8080/ 
+  BalancerMember http://192.168.61.11:8080/
   BalancerMember http://192.168.61.12:8080/
   ProxySet lbmethod=bybusyness
 </Proxy>
-ProxyPass / balancer://mycluster
+
+ProxyPass / balancer://mycluster/
+ProxyPassReverse / balancer://mycluster/
