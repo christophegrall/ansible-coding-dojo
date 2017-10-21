@@ -19,7 +19,7 @@
       state: present
 
 - name: Déploiement application
-  hosts: slave1
+  hosts: slaves
   become: true
 
   roles:
