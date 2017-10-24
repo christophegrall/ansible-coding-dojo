@@ -12,15 +12,14 @@
   template:
     src: "templates/systemd.service.j2"
     dest: "/etc/systemd/system/{{app}}.service"
+    mode: 755
+  register: service_file
 
-- name: Make sure a service is running
-  systemd: state=started name={{app}}
-
-- name: Restart myapp.service
+- name: Restart {{app}}.service
   systemd:
     state: started
-    name: myapp
-  when: jar_copy.changed
+    name: {{app}}
+  when: service_file.changed or jar_copy.changed
   notify:
     - reload systemd
 
