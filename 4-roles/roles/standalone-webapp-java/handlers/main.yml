@@ -1,2 +1,4 @@
 ---
-# handlers file for standalone-webapp
+- name: reload systemd
+  become: yes
+  command: systemctl daemon-reload

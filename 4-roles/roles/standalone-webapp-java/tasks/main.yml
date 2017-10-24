@@ -1,7 +1,7 @@
 ---
 - name: Copy executable jar
   copy:
-    src: ../demo/target/demo.jar
+    src: ../files/demo.jar
     dest: "{{app_jar}}"
     owner: "{{deploy_user}}"
     group: "{{deploy_group}}"
@@ -12,14 +12,17 @@
   template:
     src: "templates/systemd.service.j2"
     dest: "/etc/systemd/system/{{app}}.service"
-  register: service_file
 
-- name: (re)Start myapp.service
+- name: Make sure a service is running
+  systemd: state=started name={{app}}
+
+- name: Restart myapp.service
   systemd:
-    state: "restarted"
-    name: "myapp.service"
-    daemon_reload: "yes"
-  when: service_file.changed or jar_copy.changed
+    state: started
+    name: myapp
+  when: jar_copy.changed
+  notify:
+    - reload systemd
 
 - name: Wait for the HTTP port to be listening
   wait_for:
