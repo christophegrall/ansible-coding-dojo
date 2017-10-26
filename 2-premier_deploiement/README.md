@@ -6,6 +6,18 @@
 
 http://docs.ansible.com/ansible/latest/modules_by_category.html
 
+La structure du déploiement est la suivante :
+
+    /custom/
+    |-- app
+    |   |-- myapp
+    |   |   `-- myapp.jar
+    |   `-- myapp-conf
+    |       `-- application.properties
+    `-- log
+        `-- myapp
+            `-- myapp.log
+
 Nous déploierons notre service demo sur 'slave1'.
 
     ansible-playbook -i inventory playbook.yml
@@ -15,9 +27,3 @@ Une fois l'application déployée on peut vérifier qu'elle tourne.
     curl http://192.168.61.11:8080/
 
 nous renvoie un message "Welcome from default-server"
-
-2- Ajouter l'idempotence à la tâche "(re)Start myapp.service"
-
-Pour ce faire on va capturer la sortie de la tâche "Copy executable jar" dans une variable.
-
-Si cette tâche a effectué des changements alors on redémarre le service.

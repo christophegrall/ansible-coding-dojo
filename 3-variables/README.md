@@ -21,9 +21,17 @@ On repart de l'exercice précédent.
 
 http://docs.ansible.com/ansible/latest/modules_by_category.html
 
-3- A la ligne "Wait for the HTTP port to be listening" mettre une valeur par défaut de 60 secondes pour attendre que le port 8080 soit en écoute et vérifier qu'il s'agit bien d'un integer
+3- Ajouter l'idempotence à la tâche "(re)Start myapp.service"
 
-4- Déployer un fichier application.properties externe en ajoutant le paramètre de JVM suivant au démarrage de l'application.
+On ne veut déclencher le redémarrage de l'application que quand c'est nécessaire.
+
+Pour ce faire on va capturer la sortie de la tâche "Copy executable jar" dans une variable.
+
+Si cette tâche a effectué des changements alors on redémarre le service.
+
+4- A la ligne "Wait for the HTTP port to be listening" mettre une valeur par défaut de 60 secondes pour attendre que le port 8080 soit en écoute et vérifier qu'il s'agit bien d'un integer
+
+5- Déployer un fichier application.properties externe en ajoutant le paramètre de JVM suivant au démarrage de l'application.
 
     -Dspring.config.location={{conf_dir}}/application.properties
 
@@ -32,9 +40,9 @@ définir les 2 valeurs suivantes dans `application.properties`
     server_name=
     logging.file=
 
-NB : Pour surcharger server_name on peut utiliser des facts
+NB : Pour surcharger server_name on peut utiliser des facts ansible
 
-3- Déployer le service demo sur 'slave1' en lui passant le paramètre `actuator_enabled=True`.
+6- Déployer le service demo sur 'slave1' en lui passant le paramètre `actuator_enabled=True`.
 
     ansible-playbook -i inventory playbook.yml -e "actuator_enabled=True"
 
