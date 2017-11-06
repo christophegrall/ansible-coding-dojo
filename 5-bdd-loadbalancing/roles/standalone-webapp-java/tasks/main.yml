@@ -1,7 +1,7 @@
 ---
 - name: Copy executable jar
   copy:
-    src: ../files/demo.jar
+    src: ../files/service-personne-ws.jar
     dest: "{{app_jar}}"
     owner: "{{deploy_user}}"
     group: "{{deploy_group}}"
@@ -14,16 +14,18 @@
     dest: "/etc/systemd/system/{{app}}.service"
     mode: 755
   register: service_file
+  notify: reload systemd
 
-- name: Restart {{app}}.service
+- name: Reload myapp.service, in all cases
   systemd:
-    state: started
     name: "{{app}}"
-  when: service_file.changed or jar_copy.changed
-  notify:
-    - reload systemd
+    state: started
 
 - name: Wait for the HTTP port to be listening
   wait_for:
     port: 8080
     timeout: "{{ startup_timeout | default('60') | int }}"
+
+- name: Reload systemctl manager configuration
+  shell: systemctl daemon-reload
+  when: service_file.changed or jar_copy.changed
