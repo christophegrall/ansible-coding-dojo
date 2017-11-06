@@ -18,7 +18,7 @@
 - name: Restart {{app}}.service
   systemd:
     state: started
-    name: {{app}}
+    name: "{{app}}"
   when: service_file.changed or jar_copy.changed
   notify:
     - reload systemd
