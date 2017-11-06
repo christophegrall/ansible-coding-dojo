@@ -1,24 +1,51 @@
 
-# TP5 bdd -  loadbalancing
+# TP5 Base de données - loadbalancing
 
-L'objectif du TP est déployer le service-personne sur les instances slave1 et slave2 du groupe  slaves.
+## Objectif
 
-## Démarrage
+* Installer et configurer  une instance postgresql sur le host master
+* Installer et configurer Apache server sur le host master
+* Déployer l'application __service-personne__  sur les hosts slave1 et slave2
 
-Le répertoire du TP est le suivant :
-
-### Prérequis
-
-Exécuter
-
+## Prérequis
+Installer le rôle **geerlingguy.postgresql** depuis ansible-galaxy
 ```
 ansible-galaxy install -r requirements.yml
 ```
 
-### Exécution
-
-Jouer votre playbook !
+##  Installer et configurer postgresql
+1. Ajouter le rôle **geerlingguy.postgresql** au playbook
+2. Ajouter la **post_tasks** au playbook
 
 ```
-ansible-playbook -i inventory playbook.yml -v
+post_tasks:
+
+- postgresql_schema:
+    name: personne
+    database: coding_dojo
+    login_user: postgres
+    login_password: postgres
+    login_host: 192.168.61.10
+    owner: postgres
+    state: present
 ```
+
+## Installer et configurer Apache server en reverse proxy
+
+1. Créer le rôle apache2-reverse-proxy
+2. Compléter les tasks pré-définis
+3. Dans le répertoire  **/templates**, compléter **src.j2**
+
+```
+ProxyPreserveHost On
+ProxyRequests On
+
+<Proxy balancer://mycluster>
+  ...
+</Proxy>
+
+ProxyPass / balancer://mycluster/
+ProxyPassReverse / balancer://mycluster/
+```
+
+## Déployer l'application __service-personne__
