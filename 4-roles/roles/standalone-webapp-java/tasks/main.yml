@@ -10,19 +10,24 @@
 
 - name: Install myapp.service systemd unit file
   template:
-    src: "templates/systemd.service.j2"
-    dest: "/etc/systemd/system/{{app}}.service"
+      src: "templates/systemd.service.j2"
+      dest: "/etc/systemd/system/{{app}}.service"
+      mode: 755
+  register: service_file
+  notify: reload systemd
 
-- name: Make sure a service is running
-  systemd: state=started name={{app}}
-
-- name: Restart myapp.service
+- name: Reload myapp.service, in all cases
   systemd:
+    name: "{{app}}"
+    daemon_reload: yes
     state: started
-    name: myapp
-  when: jar_copy.changed
-  notify:
-    - reload systemd
+    enabled: True
+
+- name: Reload systemctl manager configuration
+  systemd:
+    name: "{{app}}"
+    daemon_reload: yes
+  when: service_file.changed or jar_copy.changed
 
 - name: Wait for the HTTP port to be listening
   wait_for:

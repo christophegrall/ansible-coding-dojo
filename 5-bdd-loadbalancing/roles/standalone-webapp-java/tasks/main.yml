@@ -25,6 +25,7 @@
 
 - name: Reload systemctl manager configuration
   systemd:
+    name: "{{app}}"
     daemon_reload: yes
   when: service_file.changed or jar_copy.changed
 
