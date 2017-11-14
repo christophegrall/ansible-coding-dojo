@@ -26,4 +26,7 @@ Une fois l'application déployée on peut vérifier qu'elle tourne.
 
     curl http://192.168.61.11:8080/
 
-nous renvoie un message "Welcome from default-server"
+l'appel nous renvoie un message "Welcome from default-server"
+
+NB : pour l'installation de l'application en tant que service systemd un fichier est présent dans `files/myapp.service`
+il faudra le déployer dans `/etc/systemd/system/myapp.service`
