@@ -3,7 +3,7 @@ Instructions TP3
 
 Cette fois nous allons introduire l'utilisation des variables.
 On repart de l'exercice précédent.
-1- On renseigne les variables suivantes dans `/host/vars/slave1.yml` (à compléter)
+1- On renseigne les variables suivantes dans `host_vars/slave1.yml` (à compléter)
 
     app:
     base_dir:
