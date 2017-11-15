@@ -15,7 +15,22 @@ ansible-galaxy install -r requirements.yml
 
 ##  Installer et configurer postgresql
 1. Ajouter le rôle **geerlingguy.postgresql** au playbook
-2. Ajouter la **post_tasks** au playbook
+2. En utilisant des variables de groupe pour masters
+
+Utiliser la documentation du plugin postgresql pour 
+
+ajouter les entrées hba suivantes:
+  local all postgres peer
+  type all all 0.0.0.0/0 trust
+
+configurer les options globales pour écouter sur toutes les adresses :
+  listen_addresses *
+
+créer la database nommmée 'coding_dojo'
+
+créer le user : postgresql/postgresql
+
+3. Ajouter la **post_tasks** au playbook
 
 ```
 post_tasks:
