@@ -19,18 +19,25 @@ ansible-galaxy install -r requirements.yml
 
 Utiliser la documentation du plugin postgresql pour 
 
-ajouter les entrées hba suivantes:
-  local all postgres peer
-  type all all 0.0.0.0/0 trust
+1. ajouter les entrées hba suivantes:
 
-configurer les options globales pour écouter sur toutes les adresses :
-  listen_addresses *
 
-créer la database nommmée 'coding_dojo'
+```
+    local all postgres peer
+    type all all 0.0.0.0/0 trust
+```
 
-créer le user : postgresql/postgresql
+2. configurer les options globales pour écouter sur toutes les adresses
 
-3. Ajouter la **post_tasks** au playbook
+```
+listen_addresses *
+```
+
+3. créer la database nommée `coding_dojo`
+
+4. créer le user : `postgresql/postgresql`
+
+5. Ajouter la **post_task** au playbook
 
 ```
 post_tasks:
